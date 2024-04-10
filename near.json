@@ -1,0 +1,101 @@
+[
+    {
+        "name":"Near.view",
+        "description":"Queries a read-only method from a NEAR smart contract, returning:\r\n\r\nnull: If the query is still being processed\r\nundefined: If the query is complete and no value was returned by the contract\r\nA value: If the query is complete and a value was returned by the contract\r\n",
+        "js":"const greeting = Near.view(\"hello.near-examples.testnet\", \"get_greeting\", {});\r\n\r\nif (greeting === null) return \"Loading...\";\r\n\r\nreturn `The contract says: ${greeting}`;",
+        "parameters":[
+            {
+                "param":"contractName",
+                "required":"required",
+                "type":"string",
+                "description_param":"Name of the smart contract"
+            },
+            {
+                "param":"methodName",
+                "required":"required",
+                "type":"string",
+                "description_param":"Name of the method to call"
+            },
+            {
+                "param":"args",
+                "required":"object instance",
+                "type":"string",
+                "description_param":"Arguments to pass to the method"
+            },
+            {
+                "param":"blockId/finality",
+                "required":"optional",
+                "type":"string",
+                "description_param":"Block ID or finality of the transaction"
+            },
+            {
+                "param":"subscribe",
+                "required":"optional",
+                "type":"string",
+                "description_param":"This feature allows users to subscribe to a query, which automatically refreshes the data for all subscribers every 5 seconds."
+            }
+        ],
+        "pitfall":[
+            {
+                "description":"If you want to initialize the state with the result of a Near.view call, be sure to check first that the value was obtained, to avoid initializing the state with null.",
+                "js":"const contractGreet = Near.view(\"hello.near-examples.testnet\", \"get_greeting\", {});\r\n\r\n// you need to first check that the value was obtained\r\nif (contractGreet === null) return \"Loading...\";\r\n\r\nconst [greeting, setGreeting] = useState(contractGreet);\r\n\r\nreturn `The contract says: ${greeting}`;"
+            },
+            {
+                "description":"If you don't want to delay the render of your component, you can also use the useEffect hook to control the value returned by Near.view",
+                "js":"const contractGreet = Near.view('hello.near-examples.testnet', 'get_greeting');\r\n\r\nconst [greeting, setGreeting] = useState('Loading ...');\r\n\r\nuseEffect(() => {\r\n  if (contractGreet !== null) setGreeting(contractGreet);\r\n}, [contractGreet]);\r\n\r\nreturn `The contract says: ${greeting}`;"
+            }
+        ]
+    },
+    {
+        "name":"Near.call",
+        "description":"Calls a smart contract method from the blockchain. Since a transaction needs to be signed, the user must be logged in in order to make the call.",
+        "js":"if (!context.accountId) return \"Please login...\";\r\n\r\nconst onClick = () => {\r\n  Near.call(\r\n    \"hello.near-examples.testnet\",\r\n    \"set_greeting\",\r\n    { greeting: \"Hello!\" }\r\n  );\r\n};\r\n\r\nreturn <>\r\n  <h5> Hello {context.accountId} </h5>\r\n  <button onClick={onClick}> Set Greeting </button>\r\n</>;",
+        "parameters":[
+            {
+                "param":"contractName",
+                "required":"required",
+                "type":"string",
+                "description_param":"Name of the smart contract"
+            },
+            {
+                "param":"methodName",
+                "required":"required",
+                "type":"string",
+                "description_param":"Name of the method to call on the smart contract"
+            },
+            {
+                "param":"args",
+                "required":"object instance",
+                "type":"string",
+                "description_param":"Arguments to pass to the method"
+            },
+            {
+                "param":"gas",
+                "required":"optional",
+                "type":"string/number",
+                "description_param":"Maximum amount of gas to be used for the transaction (default 300Tg)"
+            },
+            {
+                "param":"deposit",
+                "required":"optional",
+                "type":"string/number",
+                "description_param":"Amount of NEAR tokens to attach to the call as deposit (in yoctoNEAR units)."
+            }
+        ],
+        "pitfall":[]
+    },
+    {
+        "name":"Near.block",
+        "description":"Queries a block from the blockchain.",
+        "js":"return Near.block(\"optimistic\");",
+        "parameters":[
+            {
+                "param":"blockHeightOrFinality",
+                "required":"optional",
+                "type":"any",
+                "description_param":"The block height or finality level to use for the blockchain query (desired block height, or one of the following strings: optimistic, final)"
+            }
+        ],
+        "pitfall":[]
+    }
+]

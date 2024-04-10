@@ -1,0 +1,77 @@
+[
+    {
+        "name":"Widget",
+        "description":"The predefined component Widget allows you to include an existing component into your code, thus enabling to create complex applications by composing components.",
+        "js":"const props = { name: \"Anna\", amount: 3 };\r\n\r\nreturn <Widget src=\"influencer.testnet/widget/Greeter\" props={props} />;",
+        "props":[]
+    },
+    {
+        "name":"IpfsImageUpload",
+        "description":"A built-in component that enables users to directly upload an image to the InterPlanetary File System (IPFS).",
+        "js":"State.init({image: {}})\r\n\r\nreturn <>\r\n  <p> Raw State: {JSON.stringify(state.image)} </p>\r\n  <IpfsImageUpload image={state.image} />\r\n</>",
+        "props":[]
+    },
+    {
+        "name":"Files",
+        "description":"A built-in component that enables to input files with drag and drop support. Read more about the Files component here.",
+        "js":"const [img, setImg] = useState(null);\r\nconst [msg, setMsg] = useState('Upload an Image')\r\n\r\nconst uploadFile = (files) => {\r\n  setMsg('Uploading...')\r\n\r\n  const file = fetch(\r\n    \"https://ipfs.near.social/add\",\r\n    {\r\n      method: \"POST\",\r\n      headers: { Accept: \"application/json\" },\r\n      body: files[0]\r\n    }\r\n  )\r\n\r\n  setImg(file.body.cid)\r\n  setMsg('Upload an Image')\r\n}\r\n\r\nreturn <>\r\n  <Files\r\n    multiple={false}\r\n    accepts={[\"image/*\"]}\r\n    clickable\r\n    className=\"btn btn-outline-primary\"\r\n    onChange={uploadFile}\r\n  >\r\n    {msg}\r\n  </Files>\r\n  {img ? <div><img src={`https://ipfs.near.social/ipfs/${img}`} /></div> : ''}\r\n</>;",
+        "props":[]
+    },
+    {
+        "name":"Markdown",
+        "description":"A component that enables to render Markdown.",
+        "js":"const markdown = (`\r\n## A title\r\n\r\nThis is some example **markdown** content, with _styled_ text\r\n`)\r\n\r\nreturn <Markdown text={markdown} />;",
+        "props":[]
+    },
+    {
+        "name":"OverlayTrigger",
+        "description":"Used to display a message or icon when the mouse is over a DOM element.",
+        "js":"const [show, setShow] = useState(false);\r\n\r\nconst overlay = (\r\n  <div className='border m-3 p-3'>\r\n    This is the overlay Message\r\n  </div>\r\n);\r\n\r\nreturn (\r\n  <OverlayTrigger\r\n    show={show}\r\n    delay={{ show: 250, hide: 300 }}\r\n    placement='auto'\r\n    overlay={overlay}\r\n  >\r\n    <button\r\n      className=\"btn btn-outline-primary\"\r\n      onMouseEnter={() => setShow(true)}\r\n      onMouseLeave={() => setShow(false)}\r\n    >\r\n      Place Mouse Over Me\r\n    </button>\r\n  </OverlayTrigger>\r\n);",
+        "props":[
+            {
+                "prop":"show",
+                "description":"A boolean value that determines whether the overlay is currently visible or not."
+            },
+            {
+                "prop":"trigger",
+                "description":"An array of events that trigger the display of the overlay. In this example, the trigger prop is set to [\"hover\", \"focus\"], which means that the overlay will be displayed when the user hovers over or focuses on the element."
+            },
+            {
+                "name":"delay",
+                "description":"An object that specifies the delay before the overlay is displayed or hidden. In this example, the delay prop is set to { show: 250, hide: 300 }, which means that the overlay will be displayed after a 250-millisecond delay and hidden after a 300-millisecond delay."
+            },
+            {
+                "name":"placement",
+                "description":"\tA string that specifies the position of the overlay relative to the trigger element. In this example, the placement prop is set to \"auto\", which means that the position will be automatically determined based on available space."
+            },
+            {
+                "name":"overlay",
+                "description":"The content that will be displayed in the overlay. In this example, the overlay prop is set to a <div> element containing the message \"This is the overlay message."
+            }
+        ]
+    },
+    {
+        "name":"InfiniteScroll",
+        "description":"Infinitely load a grid or list of items. This component allows you to create a simple, lightweight infinite scrolling page or element by supporting both window and scrollable elements.",
+        "js":"const allNumbers = Array.from(Array(100).keys())\r\nconst [lastNumber, setLastNumber] = useState(0);\r\nconst [display, setDisplay] = useState([]);\r\n\r\nconst loadNumbers = (page) => {\r\n  const toDisplay = allNumbers\r\n    .slice(0, lastNumber + page*10)\r\n    .map(n => <p>{n}</p>)\r\n\r\n  console.log(lastNumber + page*10)\r\n  setDisplay(toDisplay);\r\n  setLastNumber(lastNumber + page*10);\r\n};\r\n\r\nreturn (\r\n  <InfiniteScroll\r\n    loadMore={loadNumbers}\r\n    hasMore={lastNumber < allNumbers.length}\r\n    useWindow={false}\r\n  >\r\n    {display}\r\n  </InfiniteScroll>\r\n);",
+        "props":[]
+    },
+    {
+        "name":"TypeAhead",
+        "description":"Provides a type-ahead input field for selecting an option from a list of choices. More information about the component can be found here.",
+        "js":"const [selected, setSelected] = useState([]);\r\nconst options = [\"Apple\", \"Banana\", \"Cherry\", \"Durian\", \"Elderberry\"];\r\n\r\nreturn <>\r\n  <Typeahead\r\n    options={options}\r\n    multiple\r\n    onChange={v => setSelected(v)}\r\n    placeholder='Choose a fruit...'\r\n  />\r\n  <hr />\r\n  <p> Selected: {selected.join(', ')} </p>\r\n</>;",
+        "props":[]
+    },
+    {
+        "name":"Styled Components",
+        "description":"Styled Components is a popular library for styling React components using CSS-in-JS.",
+        "js":"const Button = styled.button`\r\n  /* Adapt the colors based on primary prop */\r\n  background: ${(props) => (props.primary ? \"palevioletred\" : \"white\")};\r\n  color: ${(props) => (props.primary ? \"white\" : \"palevioletred\")};\r\n\r\n  font-size: 1em;\r\n  margin: 1em;\r\n  padding: 0.25em 1em;\r\n  border: 2px solid palevioletred;\r\n  border-radius: 10px;\r\n`;\r\n\r\nreturn (\r\n  <div>\r\n    <Button>Normal</Button>\r\n    <Button primary>Primary</Button>\r\n  </div>\r\n);",
+        "props":[]
+    },
+    {
+        "name":"Tooltip",
+        "description":"Displays a message once the mouse hovers over a particular item. This component was imported from React-Bootstrap.",
+        "js":"const tooltip = (\r\n  <Tooltip id=\"tooltip\">\r\n    <strong>Holy guacamole!</strong> Check this info.\r\n  </Tooltip>\r\n);\r\n\r\nreturn <>\r\n  <OverlayTrigger placement=\"left\" overlay={tooltip}>\r\n    <button>Holy guacamole!</button>\r\n  </OverlayTrigger>\r\n\r\n  <OverlayTrigger placement=\"top\" overlay={tooltip}>\r\n    <button>Holy guacamole!</button>\r\n  </OverlayTrigger>\r\n\r\n  <OverlayTrigger placement=\"bottom\" overlay={tooltip}>\r\n    <button>Holy guacamole!</button>\r\n  </OverlayTrigger>\r\n\r\n  <OverlayTrigger placement=\"right\" overlay={tooltip}>\r\n    <button>Holy guacamole!</button>\r\n  </OverlayTrigger>\r\n</>",
+        "props":[]
+    }
+]

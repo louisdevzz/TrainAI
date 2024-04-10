@@ -1,0 +1,26 @@
+[
+    {
+        "name":"Sending Notifications",
+        "description":"Notifications are implemented as a particular case of indexed actions.\r\n\r\nThis means that to send a notification we just need to index the notify action for the indexer, with a key and a value.\r\n\r\nThe key tells which account to notify.\r\nThe value includes the notification type and the item being notified of.",
+        "js":"const notifyMe = () => {\r\n  Social.set({\r\n    index: {\r\n      notify: JSON.stringify({\r\n        key: context.accountId,\r\n        value: \"docs notification\"\r\n      })\r\n    }\r\n  });\r\n}\r\n\r\nreturn <>\r\n  {context.accountId?\r\n  <button onClick={notifyMe}> Get Notification </button>\r\n  :\r\n  <p> Please login to be notified</p>\r\n  }\r\n</>",
+        "js_custom":"",
+        "reference":[]
+    },
+    {
+        "name":"Notification Types",
+        "description":"Since notifications are indexed actions, anyone can create their own kind of notification.",
+        "js":"Social.set({\r\n  index: JSON.stringify({\r\n    notify: {\r\n      key: \"mob.near\",\r\n      value: {\r\n        type: \"custom\",\r\n        message: \"A message in the notification\",\r\n        widget: \"The widget to open when clicking on the notification\",\r\n        params: { parameters: \"to pass to the widget\", ... },\r\n      },\r\n    }\r\n  })\r\n});",
+        "js_custom":"Social.set({\r\n  index: JSON.stringify({\r\n    notify: {\r\n      key: \"mob.near\",\r\n      value: {\r\n        type: \"like\",\r\n        item: {\r\n          type: \"social\",\r\n          path: \"mob.near/post/main\",\r\n          blockHeight: 102169725\r\n        }\r\n      }\r\n    }\r\n  })\r\n})",
+        "reference":[
+            {"LikeButton":"Social.set({\r\n  index: JSON.stringify({\r\n    notify: {\r\n      key: \"nearhacks.near\",\r\n      value: {\r\n        type: \"comment\",\r\n        item: {\r\n          type: \"social\",\r\n          path: \"nearhacks.near/post/main\",\r\n          blockHeight: 102224773\r\n        }\r\n      }\r\n    }\r\n  })\r\n})"},
+            {"CommentButton":"Social.set({\r\n  index: JSON.stringify({\r\n    notify: {\r\n      key: \"mob.near\",\r\n      value: {\r\n        type: \"follow\",\r\n      }\r\n    }\r\n  })\r\n})"}
+        ]
+    },
+    {
+        "name":"Parsing Notifications",
+        "description":"In order to get all notifications for an user, we make a call to the Social indexer.",
+        "js":"// login to see your notifications\r\nconst accountId = context.accountId || 'influencer.testnet'\r\n\r\nconst index = Social.index(\"notify\", accountId, {limit: 2, order: \"desc\", subscribe: true});\r\n\r\nreturn <>\r\n  <h4> Notifications for {accountId} </h4>\r\n  {index.map(e => <> {JSON.stringify(e, null, 2)} <br/></>) }\r\n</>",
+        "js_custom":"",
+        "reference":[]
+    }
+]

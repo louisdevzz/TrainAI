@@ -1,0 +1,235 @@
+[
+    {
+        "name":"Social.get",
+        "description":"Social.get queries a key from the SocialDB contract and returns the data. The key being queried can contain wildcards.\r\n\r\nFor example:\r\n\r\nalice.near/profile/** will match the entire profile data of account alice.near.\r\nalice.near/profile/* will match all the fields of the profile, but not the nested objects.\r\nalice.near/profile/name will match only the name field of the profile.\r\n/widget/ will match all the widgets of all the accounts.",
+        "js":"const profile = Social.get(\"influencer.testnet/profile/*\");\r\nconst widget = Social.get(\"influencer.testnet/widget/Greeter\");\r\n\r\nif(profile === null || widget === null) return \"Loading ...\"\r\n\r\nreturn (\r\n  <div>\r\n    <p>Profile: {JSON.stringify(profile)}</p>\r\n    <p>Widgets: {JSON.stringify(widget)} </p>\r\n  </div>\r\n);",
+        "parameters": [
+            {
+                "param":"patterns",
+                "required":"required",
+                "type":"string / string[]",
+                "description_param":"the path pattern(s)"
+            },
+            {
+                "param":"finality",
+                "required":"optional",
+                "type":"\"final\" / number",
+                "description_param":"the block height or finality"
+            } 
+        ],
+        "options":[
+            {
+                "param":"subscribe",
+                "required":"optional",
+                "type":"object",
+                "description_param":"if true, the data will be refreshed every 5 seconds."
+            },
+            {
+                "param":"return_deleted",
+                "required":"optional",
+                "type":"object",
+                "description_param":"whether to return deleted values (as null). Default is false."
+            }
+        ],
+        "standards":[]
+    },
+    {
+        "name":"Social.getr",
+        "description":"Social.getr is just a wrapper helper for Social.get, it appends ** to each of the path pattern.\r\n\r\n",
+        "js":"const profile = Social.getr(\"influencer.testnet/profile\");\r\n\r\nreturn (\r\n  <div>\r\n    <p>Profile: {JSON.stringify(profile)}</p>\r\n  </div>\r\n);",
+        "parameters": [
+            {
+                "param":"patterns",
+                "required":"required",
+                "type":"string / string[]",
+                "description_param":"the path pattern(s)"
+            },
+            {
+                "param":"finality",
+                "required":"optional",
+                "type":"\"final\" / number",
+                "description_param":"the block height or finality"
+            }
+        ],
+        "options":[
+            {
+                "param":"subscribe",
+                "required":"optional",
+                "type":"object",
+                "description_param":"if true, the data will be refreshed every 5 seconds."
+            },
+            {
+                "param":"return_deleted",
+                "required":"optional",
+                "type":"object",
+                "description_param":"whether to return deleted values (as null). Default is false."
+            }
+        ],
+        "standards":[]
+    },
+    {
+        "name":"Social.keys",
+        "description":"The keys method allows to get the list of keys that match a pattern. It's useful for querying the data without reading values.\r\n\r\nIt also has an additional options field that can be used to specify the return type and whether to return deleted keys.\r\n\r\n",
+        "js":"const data = Social.keys(`influencer.testnet/profile/*`, \"final\");\r\n\r\nreturn JSON.stringify(data);",
+        "parameters": [
+            {
+                "param":"patterns",
+                "required":"required",
+                "type":"string / string[]",
+                "description_param":"the path pattern(s)"
+            },
+            {
+                "param":"finality",
+                "required":"optional",
+                "type":"\"final\" / number",
+                "description_param":"the block height or finality"
+            }
+        ],
+        "options":[
+            {
+                "param":"subscribe",
+                "required":"optional",
+                "type":"object",
+                "description_param":"if true, the data will be refreshed every 5 seconds."
+            },
+            {
+                "param":"return_deleted",
+                "required":"optional",
+                "type":"object",
+                "description_param":"whether to return deleted values (as null). Default is false."
+            },
+            {
+                "param":"return_type",
+                "required":"optional",
+                "type":"object",
+                "description_param":"either \"History\", \"True\", or \"BlockHeight\". If not specified, it will return the \"True\""
+            },
+            {
+                "param":"values_only",
+                "required":"optional",
+                "type":"object",
+                "description_param":"whether to return only values (don't include objects). Default is false."
+            }
+        ],
+        "standards":[]
+    },
+    {
+        "name":"Social.set",
+        "description":"Takes a data object and commits it to SocialDB. The data object can contain multiple keys, and each key can contain multiple values.\r\n\r\nImportantly, a user can only commit to their own space in SocialDB (e.g. alice.near can only write in alice.near/**), except if given explicit permission by the owner of another space.\r\n\r\nEach time a user wants to commit data, they will be prompted to confirm the action. On confirming, the user can choose to not be asked again in the future.",
+        "js":"const onClick = () => {\r\n  Social.set({\r\n    post: {\r\n      main: JSON.stringify({\r\n        type: \"md\",\r\n        text: \"I've read the docs!\"\r\n      })\r\n    }\r\n  })\r\n}\r\n\r\nif(!context.accountId) return \"Please login...\";\r\n\r\nreturn <>\r\n  <p> Save a message showing some love to the NEAR Docs </p>\r\n  <button onClick={onClick}> Save the Message </button>\r\n</>;",
+        "parameters":[
+            {
+                "param":"data",
+                "required":"required",
+                "type":"object",
+                "description_param":"the data object to be committed. Similar to CommitButton, it shouldn't start with an account ID."
+            },
+            {
+                "param":"options",
+                "required":"optional",
+                "type":"object",
+                "description_param":"optional object."
+            }
+        ],
+        "options":[
+            {
+                "param":"force",
+                "required":"optional",
+                "type":"object",
+                "description_param":"whether to overwrite the data."
+            },
+            {
+                "param":"onCommit",
+                "required":"optional",
+                "type":"object",
+                "description_param":"function to trigger on successful commit. Will pass the data that was written (including accountID)."
+            },
+            {
+                "param":"onCancel",
+                "required":"optional",
+                "type":"object",
+                "description_param":"function to trigger if the user cancels the commit."
+            }
+        ],
+        "standards":[]
+    },
+    {
+        "name":"Social.index",
+        "description":"NEAR Social readily provides an indexer - a service that listen to actions in SocialDB, and caches them so they can be retrieved without needing to interact with the contract.\r\n\r\nThe indexer is very useful, for example, to rapidly store and retrieve information on all comments for a post. Without the indexer, we would need to check all entries in the contract to see who answered, surely running out of GAS before completion.",
+        "js":"",
+        "parameters":[],
+        "options":[],
+        "standards":[]
+    },
+    {
+        "name":"Indexing an Action",
+        "description":"To index an action we need to add the index key to the data being saved, within the index key we will save the action being indexed, alongside a key and a value that identifies this specific instance.",
+        "js":"// General form of an indexed action\r\n// {\r\n//   index: {\r\n//     actionName: JSON.stringify({ key, value })\r\n//   }\r\n// }\r\n\r\nconst onClick = () => {\r\n  Social.set({\r\n    index: {\r\n      readDocs: JSON.stringify({key: \"docs\", value: \"like\"})\r\n    } ,\r\n  })\r\n}\r\n\r\nreturn <>\r\n  {context.accountId ?\r\n  <>\r\n    <p> Index an action showing some love to the NEAR Docs </p>\r\n    <button onClick={onClick}> Index Action </button>\r\n  </> :\r\n  <p> Login to index an action </p>}\r\n</>",
+        "parameters":[],
+        "options":[],
+        "standards":[
+            {
+                "name":"Indexing a Post",
+                "description":"To index a post, the standard is to save the action post, with {key: \"main\", value: {type: \"md\"}",
+                "js":"{\r\n  index: {\r\n    post: JSON.stringify({\r\n      key: \"main\",\r\n      value: {type: \"md\"}\r\n    })\r\n  }\r\n}"
+            },
+            {
+                "name":"Indexing a Like",
+                "description":"To index a like, the standard is to save the action like, with {key: object-representing-the-post, value: {type: \"like\" }}",
+                "js":"{\r\n  index: {\r\n    like: JSON.stringify({\r\n      key: {type: 'social', path: 'influencer.testnet/post/main', blockHeight: 152959480 },\r\n      value: {type: \"like\"}})\r\n  }\r\n}"
+            }
+        ]
+    },
+    {
+        "name":"Retrieving Indexed Actions",
+        "description":"To retrieve indexed actions we use the Social.index method. It takes the action and the key as arguments, and returns an array of all the indexed values alongside the blockHeight in which they were indexed, and which user made the action.\r\n\r\n",
+        "js":"const readDocs = Social.index(\"readDocs\", \"docs\")\r\n\r\nreturn <>\r\n  <p> Number of indexed \"readDocs\" actions with key \"docs\": {readDocs.length} </p>\r\n\r\n  <b>Indexed actions</b>\r\n  {JSON.stringify(readDocs)}\r\n</>",
+        "parameters":[
+            {
+                "param":"action",
+                "required":"required",
+                "type":"string",
+                "description_param":"is the index_type from the standard, e.g. in the path index/like the action is like."
+            },
+            {
+                "param":"key",
+                "required":"required",
+                "type":"string",
+                "description_param":"is the inner indexed value from the standard."
+            }
+        ],
+        "options":[
+            {
+                "name":"subscribe",
+                "required":"optional",
+                "type":"object",
+                "description_param":"if true, the data will be refreshed every 5 seconds."
+            },
+            {
+                "name":"accountId",
+                "required":"optional",
+                "type":"object",
+                "description_param":" If given, it should either be a string or an array of account IDs to filter values by them. Otherwise, not filters by account Id."
+            },
+            {
+                "name":"order",
+                "required":"optional",
+                "type":"object",
+                "description_param":"Either asc or desc. Defaults to asc."
+            },
+            {
+                "name":"limit",
+                "required":"optional",
+                "type":"object",
+                "description_param":"Defaults to 100. The number of values to return. Index may return more than index values, if the last elements have the same block height."
+            },
+            {
+                "name":"from",
+                "required":"optional",
+                "type":"object",
+                "description_param":"Defaults to 0 or Max depending on order."
+            }
+        ],
+        "standards":[]
+    }
+]

@@ -1,0 +1,122 @@
+[
+    {
+        "name":"Fetch",
+        "description":"fetch allows to fetch data from the URL. It acts like a hook. It's a wrapper around the fetch function from the browser behind the caching layer.\r\n\r\nThe possible returned values are:\r\n\r\nIf the data is not cached, it returns null and fetches the data in the background.\r\nIf the data is cached, it returns the cached value and then revalidates it.",
+        "js":"const res = fetch(\"https://rpc.mainnet.near.org/status\");\r\n\r\nreturn res.body;",
+        "parameters":[],
+        "options":[]
+    },
+    {
+        "name":"Async Version",
+        "description":"asyncFetch is the async version of fetch, meaning that it returns a promise instead of a value.",
+        "js":"const [uptime, setUptime] = useState(null);\r\n\r\nfunction reportUptime() {\r\n  const promise = asyncFetch(\"https://rpc.mainnet.near.org/status\")\r\n  \r\n  promise.then(\r\n    res => { setUptime(res.body.uptime_sec) }\r\n  );\r\n}\r\n\r\nreturn <>\r\n  <p> {uptime? `Uptime: ${uptime}s` : `Fetch a value` } </p>\r\n  <button onClick={reportUptime}>Fetch uptime</button>\r\n</>",
+        "parameters":[],
+        "options":[]
+    },
+    {
+        "name":"Cache",
+        "description":"The useCache hook takes a promise through a generator function, fetches the data and caches it. It can be used to easily use and cache data from async data sources.\r\n\r\nThe cache is global for the VM, but each cached element is identified by a unique dataKey within each component.\r\n\r\nThe possible values returned are:\r\n\r\nnull if the cache is cold and data is fetching\r\nthe cached value while the data is being fetched\r\nA new value if new data is fetched.",
+        "js":"const status = useCache(\r\n  () =>\r\n    asyncFetch(\"https://rpc.mainnet.near.org/status\").then((res) => res.body),\r\n  \"mainnetRpcStatus\",\r\n  { subscribe: true }\r\n);\r\n\r\nreturn status;",
+        "parameters":[
+            {
+                "param":"promiseGenerator",
+                "required":"required",
+                "type":"object",
+                "description_param":"a function that returns a promise, which generates data."
+            },
+            {
+                "param":"dataKey",
+                "required":"required",
+                "type":"object",
+                "description_param":"the unique name (within the current component) to identify the data."
+            }
+        ],
+        "options":[
+            {
+                "param":"subscribe",
+                "required":"optional",
+                "type":"object",
+                "description_param":"if true, the data refreshes periodically by invalidating cache."
+            }
+        ]
+    },
+    {
+        "name":"LocalStorage",
+        "description":"NEAR Components have access to a simulated localStorage through the Storage object:\r\n\r\nStorage.get\r\nStorage.set\r\nStorage.privateGet\r\nStorage.privateSet",
+        "js":"const [time, setTime] = useState(stored || Date.now()) \r\n\r\nconst storeValue = () => {\r\n  const date = Date.now();\r\n  Storage.set('time_now', date)\r\n}\r\n\r\nreturn <>\r\n  <p> Time Now: {Date.now()} </p>\r\n  <p> Time Stored: {Storage.get('time_now')} </p>\r\n  <button onClick={storeValue}>Store Date.now()</button>\r\n</>",
+        "parameters":[
+            {
+                "name_object":"Storage.get",
+                "description_object":"Storage.get(key, widgetSrc?) - returns the public value for a given key under the given widgetSrc or the current component if widgetSrc is omitted. Can only read public values.",
+                "params":[
+                    {
+                        "param":"key",
+                        "required":"required",
+                        "type":"object",
+                        "description_param":"a user-defined key"
+                    },
+                    {
+                        "param":"widgetSrc",
+                        "required":"optional",
+                        "type":"object",
+                        "description_param":"a user-defined component"
+                    }
+                ]
+            },
+            {
+                "name_object":"Storage.set",
+                "description_object":"Storage.set(key, value) - sets the public value for a given key under the current widget. The value will be public, so other widgets can read it.",
+                "params":[
+                    {
+                        "param":"key",
+                        "required":"required",
+                        "type":"object",
+                        "description_param":"a user-defined key"
+                    },
+                    {
+                        "param":"value",
+                        "required":"required",
+                        "type":"object",
+                        "description_param":"a user-defined value"
+                    }
+                ]
+            },
+            {
+                "object_name":"Storage.privateGet",
+                "description_object":"Storage.privateGet(key) - returns the private value for a given key under the current component.",
+                "params":[
+                    {
+                        "param":"key",
+                        "required":"required",
+                        "type":"object",
+                        "description_param":"a user-defined key under the current component"
+                    }
+                ]
+            },
+            {
+                "object_name":"Storage.privateSet",
+                "description_object":"Storage.privateSet(key, value) - sets the private value for a given key under the current component. The value is private, only the current component can read it.",
+                "params":[
+                    {
+                        "param":"key",
+                        "required":"required",
+                        "type":"object",
+                        "description_param":"a user-defined key under the current component"
+                    },
+                    {
+                        "param":"widgetSrc",
+                        "required":"optional",
+                        "type":"object",
+                        "description_param":"a user-defined component"
+                    }
+                ]
+            }
+        ],
+        "options":[]
+    },
+    {
+        "name":"Clipboard",
+        "description":"NEAR Components can write data to the system's clipboard through the clipboard.writeText method.\r\n\r\nWriting to the clipboard is only allowed in trusted actions, for example, when the user clicks a button.",
+        "js":"const copyToClipboard = (test) => { clipboard.writeText(\"Hello World!\") }\r\n\r\nreturn <>\r\n    <button onClick={copyToClipboard}> Copy </button>\r\n    <textarea className=\"form-control mt-2\" placeholder=\"Test pasting here\" />\r\n</>"
+    }
+]

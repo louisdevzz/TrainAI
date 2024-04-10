@@ -1,0 +1,22 @@
+[
+    {
+        "name":"State",
+        "description":"To handle the component's state you can use useState hook. The useState hook returns a tuple of two values: the current state and a function that updates it.",
+        "js":"const [count, setCount] = useState(0);\r\n\r\nreturn (\r\n  <div>\r\n    <p>You clicked {count} times</p>\r\n    <button onClick={() => setCount(count + 1)}>Click me</button>\r\n  </div>\r\n);\r\n"
+    },
+    {
+        "name":"Props",
+        "description":"Each component has access to a local variable named props which holds the properties received as input when the component is composed.",
+        "js":"return <>\r\n  <p> This component props: {JSON.stringify(props)} </p>\r\n  <Widget src=\"influencer.testnet/widget/Greeter\" \r\n          props={{name: \"Maria\", amount: 2}} />\r\n</>"
+    },
+    {
+        "name":"useEffect Hook",
+        "description":"The useEffect hook is used to handle side effects. It will execute each time one of the dependencies changes.",
+        "js":"const [count, setCount] = useState(0);\r\nconst [visible, setVisible] = useState(false);\r\n\r\nuseEffect(() => {\r\n  if(count > 5) setVisible(true);\r\n}, [count]);\r\n\r\nreturn (\r\n  <div>\r\n    <p>You clicked {count} times</p>\r\n    <p className=\"alert alert-danger\" hidden={!visible}>\r\n      You clicked more than 5 times\r\n    </p>\r\n    <button onClick={() => setCount(count + 1)}>Click me</button>\r\n  </div>\r\n);  "
+    },
+    {
+        "name":"Import",
+        "description":"Components can import functions from other components. This is useful to reuse code and to create libraries of components",
+        "js":"const {add, multiply} = VM.require('influencer.testnet/widget/Math');\r\n\r\nreturn <>\r\n  <p> 2 + 3 = {add(2, 3)} </p>\r\n  <p> 2 * 3 = {multiply(2, 3)} </p>\r\n</>"
+    }
+]
