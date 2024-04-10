@@ -1,0 +1,47 @@
+[
+    {
+        "name":"Interact with Ethereum using Ethers.js",
+        "description":"The NEAR VM has imported the Ethers.js library, allowing for seamless interaction with Ethereum nodes using JavaScript in a NEAR component.\r\n\r\nThe Ethers object exposes the provider connection:\r\n\r\nEthers.provider() is a read-only connection to the blockchain, which allows querying the blockchain state (e.g., account, block or transaction details), querying event logs or evaluating read-only code using call.\r\nEthers.provider().getSigner() abstracts the class that interacts with an account\r\nEthers.provider().getSigner().getBalance() returns a Promise that resolves to the account address.\r\nEthers.provider().getBlockNumber() looks up the current block number (i.e. height)\r\nEthers.provider().getFeeData() gets the best guess at the recommended FeeData\r\nYou can see various ways of using Ethers objects on the Ethers documentation portal).\r\n\r\nFurthermore, numerous basic tools can be found in the ethers.utils object (be aware of the lowercase 'e').\r\n\r\nethers.utils.parseUnits(value, unit) converts the decimal string value to a BigInt, assuming unit decimal places. The unit may the number of decimal places or the name of a unit (e.g. \"gwei\" for 9 decimal places).\r\nethers.utils.formatEther(wei) converts value into a decimal string using 18 decimal places.\r\n",
+        "js":"Ethers.provider()\r\n        .getSigner()\r\n        .getBalance()\r\n        .then((balance) => {\r\n            console.log(\"Your ETH balance: \", ethers.utils.formatEther(balance))\r\n        });\r\n"
+    },
+    {
+        "name":"How to get a user account?",
+        "description":"",
+        "js":"const receiver = Ethers.provider().send(\"eth_requestAccounts\", [])[0];"
+    },
+    {
+        "name":"How to get the current chain ID?",
+        "description":"",
+        "js":"Ethers.provider().getNetwork().then((chainIdData) => {\r\n    console.log(chainIdData.chainId);\r\n});"
+    },
+    {
+        "name":"How to show a Web3Login button?",
+        "description":"",
+        "js":"<Web3ConnectButton \r\n    className=\"my-class\" \r\n    connectLabel=\"Connect Web3 Wallet\" \r\n    disconnectLabel=\"Disconnect Web3 Wallet\"\r\n    connectingLabel=\"Connecting...\" \r\n/>"
+    },
+    {
+        "name":"How to load a contract ABI?",
+        "description":"",
+        "js":"const abi = fetch(`https://eth.blockscout.com/api?module=contract&action=getabi&address=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2`);\r\n\r\nif (!abi.ok) {\r\n    return \"Loading\";\r\n}\r\n\r\nconsole.log(abi.body.result);"
+    },
+    {
+        "name":"How to load data from EVM nodes?",
+        "description":"",
+        "js":"// create a contract interface\r\nconst iface = new ethers.utils.Interface(abi.body.result);\r\n\r\n// encode the balanceOf get request\r\nconst encodedBalanceData = iface.encodeFunctionData(\"balanceOf\", [receiver]);\r\n\r\n// perform a call\r\nEthers.provider().call({\r\n    to: \"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\r\n    data: encodedBalanceData,\r\n})\r\n.then((rawBalance) => {\r\n    // decode the result\r\n    const receiverBalanceHex = iface.decodeFunctionResult(\r\n        \"balanceOf\",\r\n        rawBalance\r\n    );\r\n    console.log(Big(receiverBalanceHex).toFixed());\r\n});"
+    },
+    {
+        "name":"How to send a transaction to Ethereum nodes?",
+        "description":"",
+        "js":"// create a contract instance\r\nconst wEthContract = new ethers.Contract(\r\n    \"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2\",\r\n    abi.body.result,\r\n    Ethers.provider().getSigner()\r\n);\r\n\r\n// perform a given method (withdraw in this case)\r\nwEthContract\r\n    .withdraw(balance, {\r\n        value: 0\r\n    })\r\n    .then((transactionHash) => {\r\n        console.log(transactionHash);\r\n    });"
+    },
+    {
+        "name":"How to convert HEX values to human readable numbers?",
+        "description":"",
+        "js":"Big(balanceHex).toFixed()"
+    },
+    {
+        "name":"How to locate the ABI of a Smart Contract?",
+        "description":"Utilize platforms like etherscan.com and blockscout.com, or delve into the project's GitHub repositories and documentation.",
+        "js":""
+    }
+]
