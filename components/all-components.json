@@ -1,7 +1,7 @@
 [
     {
         "name":"Button",
-        "js":"const Click = () => {};\r\nconst RightClick = () => {};\r\nconst DoubleClick = () => {};\r\n\r\nreturn (\r\n  <button\r\n    onClick={Click}\r\n    onContextMenu={RightClick}\r\n    onDoubleClick={DoubleClick}\r\n    class=\"btn btn-primary\"\r\n  >\r\n    Button\r\n  </button>\r\n);\r\n"
+        "js":"const onClick = () => {};\r\nconst DoubleClick = () => {};\r\nreturn (\r\n  <div class=\"btn-group\" role=\"group\" aria-label=\"Basic example\">\r\n    <button\r\n      onClick={onClick}\r\n      onDoubleClick={DoubleClick}\r\n      type=\"button\"\r\n      class=\"btn btn-primary\"\r\n    >\r\n      Left\r\n    </button>\r\n    <button\r\n      onClick={onClick}\r\n      onDoubleClick={DoubleClick}\r\n      type=\"button\"\r\n      class=\"btn btn-primary\"\r\n    >\r\n      Middle\r\n    </button>\r\n    <button\r\n      onClick={onClick}\r\n      onDoubleClick={DoubleClick}\r\n      type=\"button\"\r\n      class=\"btn btn-primary\"\r\n    >\r\n      Right\r\n    </button>\r\n  </div>\r\n);\r\n"
     },
     {
         "name":"Input",
