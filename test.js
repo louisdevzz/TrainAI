@@ -1,8 +1,10 @@
 const fs = require('fs/promises');
 
-fs.readFile("./social.json")
+fs.readFile("./components/all-components.json")
 .then((data) => {
-    console.log("data: ",JSON.parse(data)[0].name)   
+    for(let i = 0;i<JSON.parse(data).length;i++){
+        console.log("data: ",JSON.parse(data)[i].js) 
+    }  
 })
 .catch((error) => {
     console.log("error",error)
