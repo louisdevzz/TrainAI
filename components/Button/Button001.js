@@ -64,7 +64,7 @@ State.init({
     count: 0,
 })
 const onClick = () => {
-    count + 1;
+    State.update({count:state.count + 1})
 }
  return(
     <Button0001 onClick={onClick}>Button 0001</Button0001>
