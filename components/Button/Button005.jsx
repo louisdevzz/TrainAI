@@ -20,7 +20,7 @@ State.init({
   data: "",
 });
 const showData = () => {
-  const datas = Near.call("inotel.pool.f863973.m0", "get_accounts", {
+  const datas = Near.view("inotel.pool.f863973.m0", "get_accounts", {
     from_index: 0,
     limit: 5,
   });
