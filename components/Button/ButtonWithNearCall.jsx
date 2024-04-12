@@ -4,16 +4,15 @@ const onClick = () => {
   const deposit = 10000000000000000000000;
   Near.call([
     {
-      contractName: "nft_delegate.joychi.testnet",
+      contractName: "genadrop-contract.nftgen.near",
       methodName: "nft_mint",
       args: {
-        token_id: "1",
+        token_id: `${Date.now()}`,
         metadata: {
-          title: "Dragon black",
-          description: "Dragon power",
-          media:
-            "https://ipfs.io/ipfs/bafkreie6g22yhzlvdpeovkedlkhemjs6qxxqw5rpua67yj3tjww73r6fui",
-          issued_at: Date.now(),
+          title: "test",
+          description: "testing",
+          media: `https://ipfs.io/ipfs/bafkreie6g22yhzlvdpeovkedlkhemjs6qxxqw5rpua67yj3tjww73r6fui`,
+          reference: `ipfs://bafkreie6g22yhzlvdpeovkedlkhemjs6qxxqw5rpua67yj3tjww73r6fui`,
         },
         receiver_id: activeAccountId,
       },
