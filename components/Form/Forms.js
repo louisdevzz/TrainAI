@@ -24,7 +24,7 @@ State.init({
         <label for="exampleInputEmail1" class="form-label">
           Email address
         </label>
-        <input
+        <input autocomplete
           type="email"
           class="form-control"
           id="exampleInputEmail1"
@@ -40,7 +40,7 @@ State.init({
         <label for="exampleInputPassword1" class="form-label">
           Password
         </label>
-        <input
+        <input autocomplete
           type="password"
           onChange={passChange}
           value={state.pass}

@@ -34,6 +34,7 @@ return (
         From Index
       </label>
       <input
+        autocomplete
         type="text"
         class="form-control"
         id="fromIndex"
@@ -46,6 +47,7 @@ return (
         Password
       </label>
       <input
+        autocomplete
         type="text"
         onChange={limit}
         value={state.limit}
