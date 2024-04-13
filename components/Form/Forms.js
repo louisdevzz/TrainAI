@@ -1,16 +1,16 @@
 State.init({
-    email: "",
-    pass: "",
+    pool: "",
+    amount: "",
     isCheck: false,
   });
-  const emailChange = (e) => {
+  const poolChange = (e) => {
     State.update({
-      email: e.target.value,
+      pool: e.target.value,
     });
   };
-  const passChange = (e) => {
+  const amountChange = (e) => {
     State.update({
-      pass: e.target.value,
+      amount: e.target.value,
     });
   };
   const isCheck = () => {
@@ -21,31 +21,27 @@ State.init({
   return (
     <div>
       <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">
+        <label for="pool" class="form-label">
           Email address
         </label>
         <input autocomplete
           type="email"
           class="form-control"
-          id="exampleInputEmail1"
-          aria-describedby="emailHelp"
-          onChange={emailChange}
-          value={state.email}
+          id="pool"
+          onChange={poolChange}
+          value={state.pool}
         />
-        <div id="emailHelp" class="form-text">
-          We'll never share your email with anyone else.
-        </div>
       </div>
       <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">
+        <label for="amount" class="form-label">
           Password
         </label>
         <input autocomplete
-          type="password"
-          onChange={passChange}
-          value={state.pass}
+          type="text"
+          onChange={amountChange}
+          value={state.amount}
           class="form-control"
-          id="exampleInputPassword1"
+          id="amount"
         />
       </div>
       <div class="mb-3 form-check">
@@ -53,14 +49,14 @@ State.init({
           onChange={isCheck}
           type="checkbox"
           class="form-check-input"
-          id="exampleCheck1"
+          id="verify"
         />
-        <label class="form-check-label" for="exampleCheck1">
+        <label class="form-check-label" for="verify">
           Check me out
         </label>
       </div>
       <button type="submit" class="btn btn-primary">
-        Submit
+        Stake
       </button>
     </div>
   );  
