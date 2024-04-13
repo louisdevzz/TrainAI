@@ -1,5 +1,11 @@
-const profile = Social.get("louisdevzz.near/profile/*");
-
+const profile = Social.get("mob.near/profile/*");
+const strucateString = (str) => {
+  if (str.length > 200) {
+    return str.slice(0, 200) + "...";
+  } else {
+    return str;
+  }
+};
 return (
   <div class="accordion" id="accordionExample">
     <div class="accordion-item">
@@ -21,7 +27,7 @@ return (
         aria-labelledby="headingOne"
         data-bs-parent="#accordionExample"
       >
-        <div class="accordion-body">{profile.description}</div>
+        <div class="accordion-body">{strucateString(profile.description)}</div>
       </div>
     </div>
   </div>

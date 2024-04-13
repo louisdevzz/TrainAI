@@ -1,4 +1,4 @@
-const profile = Social.get("magicbuild.near/profile/*");
+const profile = Social.get("mob.near/profile/*");
 if (profile == null) null;
 const tructString = (str) => {
   if (str.length > 100) {
