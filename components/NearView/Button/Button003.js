@@ -48,15 +48,8 @@ const Button0003 = styled.button`
     transform: scale(1.1); /* Bounce effect */
   }
 }`;
-State.init({
-    value: ""
-})
-
 const getValue = () => {
-    const greeting = Near.view("hello.near-examples.testnet", "get_greeting", {});
-
-    if (greeting === null) return "Loading...";
-    State.update({value:greeting})
+    Near.view("hello.near-examples.testnet", "get_greeting", {});
 }
 
 return(
